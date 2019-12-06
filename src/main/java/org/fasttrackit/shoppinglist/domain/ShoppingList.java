@@ -12,7 +12,25 @@ public class ShoppingList {
     long id;
     @NotNull
     String name;
+    String description;
     int budget;
+    int remainingBudget;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getRemainingBudget() {
+        return remainingBudget;
+    }
+
+    public void setRemainingBudget(int remainingBudget) {
+        this.remainingBudget = remainingBudget;
+    }
 
     public long getId() {
         return id;
@@ -40,10 +58,12 @@ public class ShoppingList {
 
     @Override
     public String toString() {
-        return "List{" +
+        return "ShoppingList{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", budget=" + budget +
+                ", remainingBudget=" + remainingBudget +
                 '}';
     }
 }
