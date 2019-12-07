@@ -15,8 +15,9 @@ public class ShoppingListService {
     private final ShoppingListRepository shoppingListRepository;
 
     @Autowired
-    public ShoppingListService(ShoppingListRepository shoppingListRepository){
-        this.shoppingListRepository = shoppingListRepository;}
+    public ShoppingListService(ShoppingListRepository shoppingListRepository) {
+        this.shoppingListRepository = shoppingListRepository;
+    }
 
     public ShoppingList createShoppingList(SaveShoppingListRequest request) {
         LOGGER.info("Creating new shopping list {}", request);
