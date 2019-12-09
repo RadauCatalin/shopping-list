@@ -1,4 +1,4 @@
-package org.fasttrackit.shoppinglist.transfer;
+package org.fasttrackit.shoppinglist.transfer.shoppingListRequests;
 
 import javax.validation.constraints.NotNull;
 
@@ -6,8 +6,8 @@ public class SaveShoppingListRequest {
     @NotNull
     private String name;
     private String description;
-    private int budget;
-    private int remainingBudget;
+    private Double budget;
+    private Double remainingBudget;
 
     public String getName() {
         return name;
@@ -25,19 +25,19 @@ public class SaveShoppingListRequest {
         this.description = description;
     }
 
-    public int getBudget() {
+    public double getBudget() {
         return budget;
     }
 
-    public void setBudget(int budget) {
+    public void setBudget(double budget) {
         this.budget = budget;
     }
 
-    public int getRemainingBudget() {
+    public double getRemainingBudget() {
         return remainingBudget;
     }
 
-    public void setRemainingBudget(int remainingBudget) {
+    public void setRemainingBudget(double remainingBudget) {
         this.remainingBudget = remainingBudget;
     }
 

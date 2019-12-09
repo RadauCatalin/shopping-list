@@ -2,8 +2,8 @@ package org.fasttrackit.shoppinglist.web;
 
 import org.fasttrackit.shoppinglist.domain.ShoppingList;
 import org.fasttrackit.shoppinglist.service.ShoppingListService;
-import org.fasttrackit.shoppinglist.transfer.GetShoppingListsRequest;
-import org.fasttrackit.shoppinglist.transfer.SaveShoppingListRequest;
+import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.GetShoppingListsRequest;
+import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.SaveShoppingListRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

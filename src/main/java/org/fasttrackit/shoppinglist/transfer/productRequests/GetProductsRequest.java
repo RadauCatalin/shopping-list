@@ -1,6 +1,6 @@
-package org.fasttrackit.shoppinglist.transfer;
+package org.fasttrackit.shoppinglist.transfer.productRequests;
 
-public class GetShoppingListsRequest {
+public class GetProductsRequest {
     private String partialName;
 
     public String getPartialName() {
@@ -13,7 +13,7 @@ public class GetShoppingListsRequest {
 
     @Override
     public String toString() {
-        return "GetShoppingListsRequest{" +
+        return "GetProductRequest{" +
                 "partialName='" + partialName + '\'' +
                 '}';
     }

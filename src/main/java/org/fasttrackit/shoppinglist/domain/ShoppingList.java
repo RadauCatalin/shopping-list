@@ -9,12 +9,12 @@ import javax.validation.constraints.NotNull;
 public class ShoppingList {
     @Id
     @GeneratedValue
-    long id;
+    private long id;
     @NotNull
-    String name;
-    String description;
-    int budget;
-    int remainingBudget;
+    private String name;
+    private String description;
+    private double budget;
+    private double remainingBudget;
 
     public String getDescription() {
         return description;
@@ -24,11 +24,11 @@ public class ShoppingList {
         this.description = description;
     }
 
-    public int getRemainingBudget() {
+    public double getRemainingBudget() {
         return remainingBudget;
     }
 
-    public void setRemainingBudget(int remainingBudget) {
+    public void setRemainingBudget(double remainingBudget) {
         this.remainingBudget = remainingBudget;
     }
 
@@ -48,11 +48,11 @@ public class ShoppingList {
         this.name = name;
     }
 
-    public int getBudget() {
+    public double getBudget() {
         return budget;
     }
 
-    public void setBudget(int budget) {
+    public void setBudget(double budget) {
         this.budget = budget;
     }
 

@@ -3,7 +3,7 @@ package org.fasttrackit.shoppinglist;
 import org.fasttrackit.shoppinglist.domain.ShoppingList;
 import org.fasttrackit.shoppinglist.exception.ResourceNotFoundException;
 import org.fasttrackit.shoppinglist.service.ShoppingListService;
-import org.fasttrackit.shoppinglist.transfer.SaveShoppingListRequest;
+import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.SaveShoppingListRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +61,8 @@ public class ShoppingListServiceIntegrationTests {
         SaveShoppingListRequest request = new SaveShoppingListRequest();
         request.setName(createdShoppingList.getName() + "Updated");
         request.setDescription(createdShoppingList.getDescription() + "updated");
-        request.setBudget(createdShoppingList.getBudget() + 10);
-        request.setRemainingBudget(createdShoppingList.getRemainingBudget() + 5);
+        request.setBudget(createdShoppingList.getBudget()+23.00);
+        request.setRemainingBudget(createdShoppingList.getRemainingBudget() + 5.00);
 
         ShoppingList updatedShoppingList = shoppingListService.updateShoppingList(createdShoppingList.getId(), request);
 
@@ -87,8 +87,8 @@ public class ShoppingListServiceIntegrationTests {
         SaveShoppingListRequest request = new SaveShoppingListRequest();
         request.setName("Kaufland" + System.currentTimeMillis());
         request.setDescription("For Christmas dinner");
-        request.setBudget(1600);
-        request.setRemainingBudget(1600);
+        request.setBudget(1600.30);
+        request.setRemainingBudget(1600.40);
 
         ShoppingList createdShoppingList = shoppingListService.createShoppingList(request);
 
