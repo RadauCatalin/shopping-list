@@ -1,6 +1,7 @@
 package org.fasttrackit.shoppinglist;
 
 import org.fasttrackit.shoppinglist.domain.ShoppingList;
+import org.fasttrackit.shoppinglist.exception.ResourceNotFoundException;
 import org.fasttrackit.shoppinglist.service.ShoppingListService;
 import org.fasttrackit.shoppinglist.transfer.SaveShoppingListRequest;
 import org.junit.Test;
@@ -34,7 +35,55 @@ public class ShoppingListServiceIntegrationTests {
         shoppingListService.createShoppingList(request);
     }
 
+    @Test
+    public void testGetShoppingList_whenExistingShoppingList_thenReturnProduct() {
+        ShoppingList createdShoppingList = createShoppingList();
+
+        ShoppingList shoppingList = shoppingListService.getShoppingList(createdShoppingList.getId());
+
+        assertThat(shoppingList, notNullValue());
+        assertThat(shoppingList.getId(), is(createdShoppingList.getId()));
+        assertThat(shoppingList.getName(), is(createdShoppingList.getName()));
+        assertThat(shoppingList.getDescription(), is(createdShoppingList.getDescription()));
+        assertThat(shoppingList.getBudget(), is(createdShoppingList.getBudget()));
+        assertThat(shoppingList.getRemainingBudget(), is(createdShoppingList.getRemainingBudget()));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetShoppingList_WhenNonExistingShoppingList_thenThrowResourceNotFoundException() {
+        shoppingListService.getShoppingList(99999999999999L);
+    }
+
+    @Test
+    public void testUpdateShoppingList_whenValidRequest_thanReturnUpdatedProduct() {
+        ShoppingList createdShoppingList = createShoppingList();
+
+        SaveShoppingListRequest request = new SaveShoppingListRequest();
+        request.setName(createdShoppingList.getName() + "Updated");
+        request.setDescription(createdShoppingList.getDescription() + "updated");
+        request.setBudget(createdShoppingList.getBudget() + 10);
+        request.setRemainingBudget(createdShoppingList.getRemainingBudget() + 5);
+
+        ShoppingList updatedShoppingList = shoppingListService.updateShoppingList(createdShoppingList.getId(), request);
+
+        assertThat(updatedShoppingList, notNullValue());
+        assertThat(updatedShoppingList.getId(), is(createdShoppingList.getId()));
+        assertThat(updatedShoppingList.getName(), is(request.getName()));
+        assertThat(updatedShoppingList.getDescription(), is(request.getDescription()));
+        assertThat(updatedShoppingList.getBudget(), is(request.getBudget()));
+        assertThat(updatedShoppingList.getRemainingBudget(), is(request.getRemainingBudget()));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testDeleteShoppingList_whenExistingShoppingList_thenShoppingListIsDeketed() {
+        ShoppingList shoppingList = createShoppingList();
+
+        shoppingListService.deleteShoppingList(shoppingList.getId());
+        shoppingListService.getShoppingList(shoppingList.getId());
+    }
+
     private ShoppingList createShoppingList() {
+
         SaveShoppingListRequest request = new SaveShoppingListRequest();
         request.setName("Kaufland" + System.currentTimeMillis());
         request.setDescription("For Christmas dinner");
@@ -53,6 +102,4 @@ public class ShoppingListServiceIntegrationTests {
 
         return createdShoppingList;
     }
-
-
 }
