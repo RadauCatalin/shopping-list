@@ -61,7 +61,7 @@ public class ShoppingListServiceIntegrationTests {
         SaveShoppingListRequest request = new SaveShoppingListRequest();
         request.setName(createdShoppingList.getName() + "Updated");
         request.setDescription(createdShoppingList.getDescription() + "updated");
-        request.setBudget(createdShoppingList.getBudget()+23.00);
+        request.setBudget(createdShoppingList.getBudget() + 23.00);
         request.setRemainingBudget(createdShoppingList.getRemainingBudget() + 5.00);
 
         ShoppingList updatedShoppingList = shoppingListService.updateShoppingList(createdShoppingList.getId(), request);

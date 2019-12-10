@@ -1,9 +1,9 @@
 package org.fasttrackit.shoppinglist.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class ShoppingList {
@@ -15,6 +15,11 @@ public class ShoppingList {
     private String description;
     private double budget;
     private double remainingBudget;
+    @ManyToMany(cascade = CascadeType.MERGE)
+
+    @JoinTable(name = "shoppingList_product", joinColumns = @JoinColumn(name = "shoppingList_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_Id"))
+    private Set<Product> products = new HashSet<>();
 
     public String getDescription() {
         return description;
@@ -56,6 +61,14 @@ public class ShoppingList {
         this.budget = budget;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
     @Override
     public String toString() {
         return "ShoppingList{" +
@@ -65,5 +78,20 @@ public class ShoppingList {
                 ", budget=" + budget +
                 ", remainingBudget=" + remainingBudget +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ShoppingList that = (ShoppingList) o;
+
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

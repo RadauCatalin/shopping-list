@@ -28,8 +28,8 @@ public class ProductServiceIntegrationTests {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testCreateProduct_whenInvalidRequest_thenThrowException(){
-    SaveProductRequest request = new SaveProductRequest();
+    public void testCreateProduct_whenInvalidRequest_thenThrowException() {
+        SaveProductRequest request = new SaveProductRequest();
 
         productService.createProduct(request);
     }
