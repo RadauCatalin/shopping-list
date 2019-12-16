@@ -21,6 +21,16 @@ public class ShoppingList {
             inverseJoinColumns = @JoinColumn(name = "product_Id"))
     private Set<Product> products = new HashSet<>();
 
+    public void addToShoppingList(Product product){
+        products.add(product);
+        product.getShoppingLists().add(this);
+    }
+
+    public void removeFromShoppingList(Product product) {
+        products.remove(product);
+        product.getShoppingLists().remove(this);
+    }
+
     public String getDescription() {
         return description;
     }
