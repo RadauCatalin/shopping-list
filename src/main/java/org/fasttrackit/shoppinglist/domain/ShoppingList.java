@@ -15,8 +15,12 @@ public class ShoppingList {
     private String description;
     private double budget;
     private double remainingBudget;
-    @ManyToMany(cascade = CascadeType.MERGE)
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "shoppingList_product", joinColumns = @JoinColumn(name = "shoppingList_id"),
             inverseJoinColumns = @JoinColumn(name = "product_Id"))
     private Set<Product> products = new HashSet<>();

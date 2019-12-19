@@ -3,6 +3,7 @@ package org.fasttrackit.shoppinglist.web;
 import org.fasttrackit.shoppinglist.domain.Product;
 import org.fasttrackit.shoppinglist.service.ProductService;
 import org.fasttrackit.shoppinglist.transfer.productRequests.GetProductsRequest;
+import org.fasttrackit.shoppinglist.transfer.productRequests.ProductResponse;
 import org.fasttrackit.shoppinglist.transfer.productRequests.SaveProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,8 +39,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Product>> getProducts(GetProductsRequest request, Pageable pageable) {
-        Page<Product> products = productService.getProducts(request, pageable);
+    public ResponseEntity<Page<ProductResponse>> getProducts(GetProductsRequest request, Pageable pageable) {
+        Page<ProductResponse> products = productService.getProducts(request, pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
