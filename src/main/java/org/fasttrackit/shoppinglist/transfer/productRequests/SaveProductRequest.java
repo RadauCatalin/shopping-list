@@ -16,26 +16,26 @@ public class SaveProductRequest {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public boolean isBought() {
+    public Boolean getBought() {
         return isBought;
     }
 
-    public void setBought(boolean bought) {
+    public void setBought(Boolean bought) {
         isBought = bought;
     }
 
     @Override
     public String toString() {
         return "SaveProductRequest{" +
-                "name='" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", price=" + price +
                 ", isBought=" + isBought +
                 '}';

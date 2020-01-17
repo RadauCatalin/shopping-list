@@ -9,6 +9,7 @@ import java.util.Set;
 public class ShoppingList {
     @Id
     @GeneratedValue
+    @NotNull
     private long id;
     @NotNull
     private String name;
@@ -16,9 +17,6 @@ public class ShoppingList {
     private double budget;
     private double remainingBudget;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "shoppingList_product", joinColumns = @JoinColumn(name = "shoppingList_id"),
@@ -91,6 +89,7 @@ public class ShoppingList {
                 ", description='" + description + '\'' +
                 ", budget=" + budget +
                 ", remainingBudget=" + remainingBudget +
+                ", products=" + products +
                 '}';
     }
 

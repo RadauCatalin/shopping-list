@@ -4,6 +4,7 @@ import org.fasttrackit.shoppinglist.domain.ShoppingList;
 import org.fasttrackit.shoppinglist.service.ShoppingListService;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.GetShoppingListsRequest;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.SaveShoppingListRequest;
+import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.ShoppingListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +33,8 @@ public class ShoppingListController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShoppingList> getShoppingList(@PathVariable("id") Long id) {
-        ShoppingList shoppingList = shoppingListService.getShoppingList(id);
+    public ResponseEntity<ShoppingListResponse> getShoppingList(@PathVariable("id") Long id) {
+        ShoppingListResponse shoppingList = shoppingListService.getShoppingList(id);
         return new ResponseEntity<>(shoppingList, HttpStatus.OK);
     }
 
@@ -44,8 +45,8 @@ public class ShoppingListController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ShoppingList> updateShoppingList(@PathVariable("id") Long id, @RequestBody @Valid SaveShoppingListRequest request) {
-        ShoppingList shoppingList = shoppingListService.updateShoppingList(id, request);
+    public ResponseEntity<ShoppingListResponse> updateShoppingList(@PathVariable("id") Long id, @RequestBody @Valid SaveShoppingListRequest request) {
+        ShoppingListResponse shoppingList = shoppingListService.updateShoppingList(id, request);
         return new ResponseEntity<>(shoppingList, HttpStatus.OK);
     }
 

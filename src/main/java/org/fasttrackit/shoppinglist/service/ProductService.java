@@ -28,7 +28,8 @@ public class ProductService {
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ObjectMapper objectMapper, ObjectMapper objectMapper1) {
+
+    public ProductService(ProductRepository productRepository, ObjectMapper objectMapper) {
         this.productRepository = productRepository;
         this.objectMapper = objectMapper;
     }
@@ -36,7 +37,9 @@ public class ProductService {
     public Product createProduct(SaveProductRequest request) {
         LOGGER.info("Creating product {}", request);
         Product product = objectMapper.convertValue(request, Product.class);
+
         return productRepository.save(product);
+
     }
 
     public Product getProduct(long id) {
@@ -49,7 +52,7 @@ public class ProductService {
         LOGGER.info("Retrieving products: {}", request);
         Page<Product> products;
         if (Objects.nonNull(request) && Objects.nonNull(request.getPartialName())) {
-             products =productRepository.findByPartialName(request.getPartialName(), pageable);
+            products = productRepository.findByPartialName(request.getPartialName(), pageable);
         } else {
             products = productRepository.findAll(pageable);
         }

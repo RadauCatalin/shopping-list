@@ -6,7 +6,25 @@ import java.util.Set;
 
 public class ShoppingListResponse {
     private Long id;
+    private String name;
+    private Double remainingBudget;
     private Set<ProductResponse> products;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getRemainingBudget() {
+        return remainingBudget;
+    }
+
+    public void setRemainingBudget(Double remainingBudget) {
+        this.remainingBudget = remainingBudget;
+    }
 
     public Long getId() {
         return id;
@@ -28,6 +46,8 @@ public class ShoppingListResponse {
     public String toString() {
         return "ShoppingListResponse{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
+                ", remainingBudget=" + remainingBudget +
                 ", products=" + products +
                 '}';
     }

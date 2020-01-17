@@ -5,11 +5,14 @@ import org.fasttrackit.shoppinglist.domain.ShoppingList;
 import org.fasttrackit.shoppinglist.exception.ResourceNotFoundException;
 import org.fasttrackit.shoppinglist.persistance.ShoppingListRepository;
 import org.fasttrackit.shoppinglist.transfer.productRequests.ProductResponse;
+import org.fasttrackit.shoppinglist.transfer.productRequests.SaveProductRequest;
+import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.AddToShoppingListRequest;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.GetShoppingListsRequest;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.SaveShoppingListRequest;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.ShoppingListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -25,10 +27,13 @@ public class ShoppingListService {
     public static final Logger LOGGER = LoggerFactory.getLogger(ShoppingListService.class);
 
     private final ShoppingListRepository shoppingListRepository;
+    private final ProductService productService;
 
     @Autowired
-    public ShoppingListService(ShoppingListRepository shoppingListRepository) {
+
+    public ShoppingListService(ShoppingListRepository shoppingListRepository, ProductService productService) {
         this.shoppingListRepository = shoppingListRepository;
+        this.productService = productService;
     }
 
     public ShoppingList createShoppingList(SaveShoppingListRequest request) {
@@ -41,6 +46,14 @@ public class ShoppingListService {
 
         return shoppingListRepository.save(shoppingList);
     }
+
+    public void addProductToShoppingList(AddToShoppingListRequest request, SaveProductRequest productRequest) {
+        LOGGER.info("Adding product to shopping list {}", request);
+        ShoppingList shoppingList = shoppingListRepository.findById(request.getListId()).orElseThrow();
+        Product product = productService.createProduct(productRequest);
+        shoppingList.addToShoppingList(product);
+    }
+
 
     public ShoppingListResponse getShoppingList(long id) {
         LOGGER.info("Retrieving list {}", id);
@@ -69,11 +82,14 @@ public class ShoppingListService {
 
     public Page<ShoppingList> getShoppingLists(GetShoppingListsRequest request, Pageable pageable) {
         LOGGER.info("Retrieveng lists {}", request);
-        if (Objects.nonNull(request) && Objects.nonNull(request.getPartialName())) {
-            return shoppingListRepository.findByPartialName(request.getPartialName(), pageable);
-        } else {
             return shoppingListRepository.findAll(pageable);
         }
+
+    public ShoppingListResponse updateShoppingList(long id, SaveShoppingListRequest request) {
+        LOGGER.info("Updating shopping list id {}: {}", id, request);
+        ShoppingListResponse shoppingListResponse = getShoppingList(id);
+        BeanUtils.copyProperties(request, shoppingListResponse);
+        return shoppingListResponse;
     }
 
     public void deleteShoppingList(long id) {
