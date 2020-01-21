@@ -76,11 +76,22 @@ public class Product {
 
         Product product = (Product) o;
 
-        return id == product.id;
+        if (id != product.id) return false;
+        if (isBought != product.isBought) return false;
+        if (Double.compare(product.price, price) != 0) return false;
+        return name.equals(product.name);
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        int result;
+        long temp;
+        result = (int) (id ^ (id >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (isBought ? 1 : 0);
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }
+

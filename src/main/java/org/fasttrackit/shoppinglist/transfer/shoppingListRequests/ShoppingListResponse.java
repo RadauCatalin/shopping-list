@@ -48,7 +48,6 @@ public class ShoppingListResponse {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", remainingBudget=" + remainingBudget +
-                ", products=" + products +
                 '}';
     }
 }

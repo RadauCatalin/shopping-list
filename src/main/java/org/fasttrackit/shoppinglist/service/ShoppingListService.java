@@ -14,9 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -54,7 +54,7 @@ public class ShoppingListService {
         shoppingList.addToShoppingList(product);
     }
 
-
+    @Transactional
     public ShoppingListResponse getShoppingList(long id) {
         LOGGER.info("Retrieving list {}", id);
         ShoppingList shoppingList = shoppingListRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("List " + id + " does not exist. "));
@@ -80,10 +80,22 @@ public class ShoppingListService {
         return response;
     }
 
-    public Page<ShoppingList> getShoppingLists(GetShoppingListsRequest request, Pageable pageable) {
+    public Set<GetShoppingListsRequest> getShoppingLists(GetShoppingListsRequest request, Pageable pageable) {
         LOGGER.info("Retrieveng lists {}", request);
-            return shoppingListRepository.findAll(pageable);
+        Set<GetShoppingListsRequest> listsRequests = new HashSet<>();
+        Iterator<ShoppingList> listIterator = shoppingListRepository.findAll().iterator();
+        while (listIterator.hasNext()){
+            ShoppingList shoppingList = listIterator.next();
+
+            GetShoppingListsRequest getShoppingListsRequest = new GetShoppingListsRequest();
+            getShoppingListsRequest.setId(shoppingList.getId());
+            getShoppingListsRequest.setName(shoppingList.getName());
+
+            listsRequests.add(getShoppingListsRequest);
         }
+
+        return listsRequests;
+    }
 
     public ShoppingListResponse updateShoppingList(long id, SaveShoppingListRequest request) {
         LOGGER.info("Updating shopping list id {}: {}", id, request);

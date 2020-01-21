@@ -89,7 +89,6 @@ public class ShoppingList {
                 ", description='" + description + '\'' +
                 ", budget=" + budget +
                 ", remainingBudget=" + remainingBudget +
-                ", products=" + products +
                 '}';
     }
 
@@ -100,11 +99,22 @@ public class ShoppingList {
 
         ShoppingList that = (ShoppingList) o;
 
-        return id == that.id;
+        if (id != that.id) return false;
+        if (Double.compare(that.budget, budget) != 0) return false;
+        if (Double.compare(that.remainingBudget, remainingBudget) != 0) return false;
+        if (!name.equals(that.name)) return false;
+        return description.equals(that.description);
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        int result;
+        long temp;
+        result = (int) (id ^ (id >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + description.hashCode();
+        temp = Double.doubleToLongBits(budget);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

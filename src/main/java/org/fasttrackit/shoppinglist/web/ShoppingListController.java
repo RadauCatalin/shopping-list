@@ -6,13 +6,13 @@ import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.GetShoppingLis
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.SaveShoppingListRequest;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.ShoppingListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -39,8 +39,8 @@ public class ShoppingListController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ShoppingList>> getShoppingLists(GetShoppingListsRequest request, Pageable pageable) {
-        Page<ShoppingList> shoppingLists = shoppingListService.getShoppingLists(request, pageable);
+    public ResponseEntity<Set<GetShoppingListsRequest>>shoppingLists(GetShoppingListsRequest request, Pageable pageable) {
+        Set<GetShoppingListsRequest> shoppingLists = shoppingListService.getShoppingLists(request, pageable);
         return new ResponseEntity<>(shoppingLists, HttpStatus.OK);
     }
 

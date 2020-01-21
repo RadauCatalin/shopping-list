@@ -22,6 +22,7 @@ public class ProductServiceIntegrationTests {
     @Autowired
     private ProductService productService;
 
+
     @Test
     public void testCreateProduct_whenValidRequest_thenProductIsSaved() {
         createProduct();

@@ -1,7 +1,17 @@
 package org.fasttrackit.shoppinglist.transfer.shoppingListRequests;
 
 public class GetShoppingListsRequest {
+    private Long id;
     private String name;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -14,7 +24,8 @@ public class GetShoppingListsRequest {
     @Override
     public String toString() {
         return "GetShoppingListsRequest{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
