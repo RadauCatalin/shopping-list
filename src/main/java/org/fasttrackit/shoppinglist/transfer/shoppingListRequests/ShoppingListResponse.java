@@ -7,7 +7,9 @@ import java.util.Set;
 public class ShoppingListResponse {
     private Long id;
     private String name;
+    private Double budget;
     private Double remainingBudget;
+    private String description;
     private Set<ProductResponse> products;
 
     public String getName() {
@@ -16,6 +18,14 @@ public class ShoppingListResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Double budget) {
+        this.budget = budget;
     }
 
     public Double getRemainingBudget() {
@@ -34,6 +44,14 @@ public class ShoppingListResponse {
         this.id = id;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Set<ProductResponse> getProducts() {
         return products;
     }
@@ -47,7 +65,10 @@ public class ShoppingListResponse {
         return "ShoppingListResponse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", budget=" + budget +
                 ", remainingBudget=" + remainingBudget +
+                ", description='" + description + '\'' +
+                ", products=" + products +
                 '}';
     }
 }

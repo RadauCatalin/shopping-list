@@ -44,7 +44,7 @@ public class ProductService {
 
     public Product getProduct(long id) {
 
-        LOGGER.info("Retrevieng product {}", id);
+        LOGGER.info("Retrieving product {}", id);
         return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product " + id + " does not exist."));
     }
 

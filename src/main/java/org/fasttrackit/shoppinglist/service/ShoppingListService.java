@@ -60,6 +60,10 @@ public class ShoppingListService {
         ShoppingList shoppingList = shoppingListRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("List " + id + " does not exist. "));
         ShoppingListResponse response = new ShoppingListResponse();
         response.setId(shoppingList.getId());
+        response.setName(shoppingList.getName());
+        response.setBudget(shoppingList.getBudget());
+        response.setRemainingBudget(shoppingList.getBudget());
+        response.setDescription(shoppingList.getDescription());
 
         Set<ProductResponse> productInShoppingList = new HashSet<>();
 
