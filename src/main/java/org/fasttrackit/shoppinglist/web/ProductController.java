@@ -2,6 +2,7 @@ package org.fasttrackit.shoppinglist.web;
 
 import org.fasttrackit.shoppinglist.domain.Product;
 import org.fasttrackit.shoppinglist.service.ProductService;
+import org.fasttrackit.shoppinglist.transfer.RemoveFromListRequest;
 import org.fasttrackit.shoppinglist.transfer.productRequests.GetProductsRequest;
 import org.fasttrackit.shoppinglist.transfer.productRequests.ProductResponse;
 import org.fasttrackit.shoppinglist.transfer.productRequests.SaveProductRequest;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
 
     private final ProductService productService;
 
@@ -50,9 +52,9 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteProduct(@PathVariable("id") Long id) {
-        productService.deleteProduct(id);
+    @PutMapping
+    public ResponseEntity<Product> deleteProduct(@RequestBody @Valid RemoveFromListRequest request) {
+        productService.deleteProduct(request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

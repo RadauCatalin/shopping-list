@@ -7,6 +7,7 @@ public class SaveProductRequest {
     private String name;
     private Double price;
     private Boolean isBought;
+    private Long listId;
 
     public String getName() {
         return name;
@@ -30,6 +31,14 @@ public class SaveProductRequest {
 
     public void setBought(Boolean bought) {
         isBought = bought;
+    }
+
+    public Long getListId() {
+        return listId;
+    }
+
+    public void setListId(Long listId) {
+        this.listId = listId;
     }
 
     @Override

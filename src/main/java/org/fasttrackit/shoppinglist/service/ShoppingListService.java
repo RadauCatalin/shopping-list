@@ -5,7 +5,6 @@ import org.fasttrackit.shoppinglist.domain.ShoppingList;
 import org.fasttrackit.shoppinglist.exception.ResourceNotFoundException;
 import org.fasttrackit.shoppinglist.persistance.ShoppingListRepository;
 import org.fasttrackit.shoppinglist.transfer.productRequests.ProductResponse;
-import org.fasttrackit.shoppinglist.transfer.productRequests.SaveProductRequest;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.AddToShoppingListRequest;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.GetShoppingListsRequest;
 import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.SaveShoppingListRequest;
@@ -27,13 +26,25 @@ public class ShoppingListService {
     public static final Logger LOGGER = LoggerFactory.getLogger(ShoppingListService.class);
 
     private final ShoppingListRepository shoppingListRepository;
-    private final ProductService productService;
 
     @Autowired
 
-    public ShoppingListService(ShoppingListRepository shoppingListRepository, ProductService productService) {
+    public ShoppingListService(ShoppingListRepository shoppingListRepository) {
         this.shoppingListRepository = shoppingListRepository;
-        this.productService = productService;
+    }
+
+    public double calculateBudget(ShoppingList shoppingList) {
+        double budget = shoppingList.getBudget();
+        double remainingBudget = shoppingList.getBudget();
+        Iterator<Product> products = shoppingList.getProducts().iterator();
+        for (int i = 0; products.hasNext(); i++) {
+            Product product = products.next();
+            if (product.isBought()) {
+                remainingBudget = budget - product.getPrice();
+            }
+
+        }
+        return remainingBudget;
     }
 
     public ShoppingList createShoppingList(SaveShoppingListRequest request) {
@@ -47,10 +58,10 @@ public class ShoppingListService {
         return shoppingListRepository.save(shoppingList);
     }
 
-    public void addProductToShoppingList(AddToShoppingListRequest request, SaveProductRequest productRequest) {
+
+    public void addProductToShoppingList(AddToShoppingListRequest request, Product product) {
         LOGGER.info("Adding product to shopping list {}", request);
         ShoppingList shoppingList = shoppingListRepository.findById(request.getListId()).orElseThrow();
-        Product product = productService.createProduct(productRequest);
         shoppingList.addToShoppingList(product);
     }
 
@@ -62,7 +73,7 @@ public class ShoppingListService {
         response.setId(shoppingList.getId());
         response.setName(shoppingList.getName());
         response.setBudget(shoppingList.getBudget());
-        response.setRemainingBudget(shoppingList.getBudget());
+        response.setRemainingBudget(calculateBudget(shoppingList));
         response.setDescription(shoppingList.getDescription());
 
         Set<ProductResponse> productInShoppingList = new HashSet<>();
@@ -88,7 +99,7 @@ public class ShoppingListService {
         LOGGER.info("Retrieveng lists {}", request);
         Set<GetShoppingListsRequest> listsRequests = new HashSet<>();
         Iterator<ShoppingList> listIterator = shoppingListRepository.findAll().iterator();
-        while (listIterator.hasNext()){
+        while (listIterator.hasNext()) {
             ShoppingList shoppingList = listIterator.next();
 
             GetShoppingListsRequest getShoppingListsRequest = new GetShoppingListsRequest();

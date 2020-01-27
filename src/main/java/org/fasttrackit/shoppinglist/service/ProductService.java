@@ -2,11 +2,15 @@ package org.fasttrackit.shoppinglist.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fasttrackit.shoppinglist.domain.Product;
+import org.fasttrackit.shoppinglist.domain.ShoppingList;
 import org.fasttrackit.shoppinglist.exception.ResourceNotFoundException;
 import org.fasttrackit.shoppinglist.persistance.ProductRepository;
+import org.fasttrackit.shoppinglist.persistance.ShoppingListRepository;
+import org.fasttrackit.shoppinglist.transfer.RemoveFromListRequest;
 import org.fasttrackit.shoppinglist.transfer.productRequests.GetProductsRequest;
 import org.fasttrackit.shoppinglist.transfer.productRequests.ProductResponse;
 import org.fasttrackit.shoppinglist.transfer.productRequests.SaveProductRequest;
+import org.fasttrackit.shoppinglist.transfer.shoppingListRequests.AddToShoppingListRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,12 +28,16 @@ import java.util.Objects;
 public class ProductService {
     public static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
+    private final ShoppingListService shoppingListService;
+    private final ShoppingListRepository shoppingListRepository;
     private final ProductRepository productRepository;
     private final ObjectMapper objectMapper;
 
     @Autowired
 
-    public ProductService(ProductRepository productRepository, ObjectMapper objectMapper) {
+    public ProductService(ShoppingListService shoppingListService, ShoppingListRepository shoppingListRepository, ProductRepository productRepository, ObjectMapper objectMapper) {
+        this.shoppingListService = shoppingListService;
+        this.shoppingListRepository = shoppingListRepository;
         this.productRepository = productRepository;
         this.objectMapper = objectMapper;
     }
@@ -37,7 +45,10 @@ public class ProductService {
     public Product createProduct(SaveProductRequest request) {
         LOGGER.info("Creating product {}", request);
         Product product = objectMapper.convertValue(request, Product.class);
-
+        AddToShoppingListRequest addRequest = new AddToShoppingListRequest();
+        addRequest.setListId(request.getListId());
+        addRequest.setProductId(product.getId());
+        shoppingListService.addProductToShoppingList(addRequest, product);
         return productRepository.save(product);
 
     }
@@ -78,9 +89,11 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public void deleteProduct(long id) {
-        LOGGER.info("Deleting product {}", id);
-        productRepository.deleteById(id);
-        LOGGER.info("Deleted product {}", id);
+    public void deleteProduct(RemoveFromListRequest request) {
+        LOGGER.info("Deleting product {}", request);
+        ShoppingList shoppingList = shoppingListRepository.findById(request.getListID()).orElseThrow();
+        Product product = productRepository.findById(request.getProductID()).orElseThrow();
+        shoppingList.removeFromShoppingList(product);
+        LOGGER.info("Deleted product {}", request);
     }
 }

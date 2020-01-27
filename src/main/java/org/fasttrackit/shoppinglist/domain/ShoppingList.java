@@ -23,7 +23,7 @@ public class ShoppingList {
             inverseJoinColumns = @JoinColumn(name = "product_Id"))
     private Set<Product> products = new HashSet<>();
 
-    public void addToShoppingList(Product product){
+    public void addToShoppingList(Product product) {
         products.add(product);
         product.getShoppingLists().add(this);
     }
@@ -114,6 +114,8 @@ public class ShoppingList {
         result = 31 * result + name.hashCode();
         result = 31 * result + description.hashCode();
         temp = Double.doubleToLongBits(budget);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(remainingBudget);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
