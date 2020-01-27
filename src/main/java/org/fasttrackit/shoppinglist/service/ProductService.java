@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +42,16 @@ public class ProductService {
         this.productRepository = productRepository;
         this.objectMapper = objectMapper;
     }
-//todo: find a way to add product to shopping list after product is saved
-    public Product createProduct(SaveProductRequest request) {
+
+    @Transactional
+    public void createProduct(SaveProductRequest request) {
         LOGGER.info("Creating product {}", request);
         Product product = objectMapper.convertValue(request, Product.class);
         AddToShoppingListRequest addRequest = new AddToShoppingListRequest();
         addRequest.setListId(request.getListId());
         addRequest.setProductId(product.getId());
+        productRepository.save(product);
         shoppingListService.addProductToShoppingList(addRequest, product);
-        return productRepository.save(product);
 
     }
 
@@ -88,12 +90,13 @@ public class ProductService {
 
         return productRepository.save(product);
     }
-//todo: resolve problem- product is not removed from shopping list
+
     public void deleteProduct(RemoveFromListRequest request) {
         LOGGER.info("Deleting product {}", request);
-        ShoppingList shoppingList = shoppingListRepository.findById(request.getListID()).orElseThrow();
-        Product product = productRepository.findById(request.getProductID()).orElseThrow();
+        ShoppingList shoppingList = shoppingListRepository.findById(request.getListID()).orElseThrow(() -> new ResourceNotFoundException("List " + request.getListID() + " does not exist."));
+        Product product = productRepository.findById(request.getProductID()).orElseThrow(() -> new ResourceNotFoundException("Product " + request.getProductID() + " does not exist."));
         shoppingList.removeFromShoppingList(product);
+        shoppingListRepository.save(shoppingList);
         LOGGER.info("Deleted product {}", request);
     }
 }
