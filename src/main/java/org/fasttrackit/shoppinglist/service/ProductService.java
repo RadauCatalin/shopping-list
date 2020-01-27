@@ -41,7 +41,7 @@ public class ProductService {
         this.productRepository = productRepository;
         this.objectMapper = objectMapper;
     }
-
+//todo: find a way to add product to shopping list after product is saved
     public Product createProduct(SaveProductRequest request) {
         LOGGER.info("Creating product {}", request);
         Product product = objectMapper.convertValue(request, Product.class);
@@ -88,7 +88,7 @@ public class ProductService {
 
         return productRepository.save(product);
     }
-
+//todo: resolve problem- product is not removed from shopping list
     public void deleteProduct(RemoveFromListRequest request) {
         LOGGER.info("Deleting product {}", request);
         ShoppingList shoppingList = shoppingListRepository.findById(request.getListID()).orElseThrow();
