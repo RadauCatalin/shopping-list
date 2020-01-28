@@ -34,15 +34,13 @@ public class ShoppingListService {
     }
 
     public double calculateBudget(ShoppingList shoppingList) {
-        double budget = shoppingList.getBudget();
+       // double budget = shoppingList.getBudget();
         double remainingBudget = shoppingList.getBudget();
         Iterator<Product> products = shoppingList.getProducts().iterator();
-        for (int i = 0; products.hasNext(); i++) {
+        while (products.hasNext()) {
             Product product = products.next();
-            if (product.isBought()) {
-                remainingBudget = budget - product.getPrice();
-            }
-
+            remainingBudget = remainingBudget - product.getPrice();
+            shoppingList.setRemainingBudget(remainingBudget);
         }
         return remainingBudget;
     }
